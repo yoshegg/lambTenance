@@ -21,11 +21,11 @@ public abstract class Property {
         _description = description;
     }
 
-    public void generateError() {
+    public void generateAnomaly() {
         _baseValue *= 1.5;
     }
 
-    public void generateAnomaly() {
+    public void generateError() {
         _baseValue *= 0.0;
     }
 
