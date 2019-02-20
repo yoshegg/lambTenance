@@ -55,9 +55,7 @@ public class Factory {
                     for (Machine m : machines)
                         out.write(m.toString());
                     out.flush();
-                    System.out.println(1);
                     Thread.sleep(1000);
-                    System.out.println(2);
                 }
             } catch (Exception e) {
                 System.out.println(e);
