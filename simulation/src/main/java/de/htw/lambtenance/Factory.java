@@ -2,6 +2,15 @@ package de.htw.lambtenance;
 
 import de.htw.lambtenance.machines.*;
 import de.htw.lambtenance.properties.Property;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.KafkaException;
+import org.apache.kafka.common.errors.AuthorizationException;
+import org.apache.kafka.common.errors.OutOfOrderSequenceException;
+import org.apache.kafka.common.errors.ProducerFencedException;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -56,8 +65,7 @@ public class Factory {
 
     }
 
-    private void startMachines() {
-        Thread thread = new Thread(() -> {
+    private void startMachines2() {
         machineThread = new Thread(() -> {
             Thread thisThread = Thread.currentThread();
             try {
@@ -75,6 +83,31 @@ public class Factory {
         });
         machineThread.start();
     }
+
+
+
+    private void startMachines() {
+        setUpKafka();
+        machineThread = new Thread(() -> {
+           Thread thisThread = Thread.currentThread();
+           try {
+               while (machineThread == thisThread) {
+                   for (Machine m : machines) {
+                       ProducerRecord<String, String> rec = new ProducerRecord<>("bla", m.toString());
+                       _kafaProducer.send(rec);
+                   }
+
+               }
+           } catch (ProducerFencedException | OutOfOrderSequenceException | AuthorizationException e) {
+               e.printStackTrace();
+               _kafaProducer.close();
+           }
+           _kafaProducer.close();
+        });
+    }
+
+    private void stopMachines() {
+        machineThread = null;
     }
 
     public void generatePropertyError() {
@@ -136,5 +169,23 @@ public class Factory {
         int rndIndex = new Random().nextInt(numberOfProperties);
         return (Property) m.getProperties().toArray()[rndIndex];
     }
+
+    /***************************
+     * KAFKA
+     **************************/
+
+    private Properties _kafkaConfigProperties = new Properties();
+
+    private Producer _kafaProducer;
+
+    private void setUpKafka() {
+        _kafkaConfigProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        _kafkaConfigProperties.put(
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.ByteArraySerializer");
+        _kafkaConfigProperties.put(
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.StringSerializer");
+        _kafaProducer = new KafkaProducer<String, String>(_kafkaConfigProperties);
+    }
+
 
 }
