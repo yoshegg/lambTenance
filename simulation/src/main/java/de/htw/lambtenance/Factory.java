@@ -103,6 +103,7 @@ public class Factory {
            }
            _kafkaProducer.close();
         });
+        machineThread.start();
     }
 
     private void stopMachines() {
