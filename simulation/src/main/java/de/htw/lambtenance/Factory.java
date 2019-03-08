@@ -96,6 +96,7 @@ public class Factory {
                            ProducerRecord<String, JSONObject> rec
                                    = new ProducerRecord<>("maintenance", p.getJsonObject(m));
                            _kafkaProducer.send(rec);
+                           System.out.println("### SENT ###");
                        }
                    }
 
