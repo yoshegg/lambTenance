@@ -20,7 +20,7 @@ public abstract class Machine {
         _description = description;
     }
 
-    public String generateDummyData() {
+    private String generateDummyData() {
         StringBuilder output = new StringBuilder();
         output.append(_description + " (" + id + ")\n");
         for (Property p : properties) {
