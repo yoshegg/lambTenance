@@ -36,6 +36,8 @@ public class Factory {
 
     private Thread machineThread;
 
+    private Random _randomWithSeed = new Random(123456789);
+
 
     public Factory() {
         generateMachines();
@@ -52,11 +54,12 @@ public class Factory {
     private void generateMachines() {
         for (int i = 1; i <= NUMBER_OF_MACHINES; i++) {
             int numberOfClassesOfMachines = classesOfMachines.size();
-            int randomMachineIndex = new Random().nextInt(numberOfClassesOfMachines);
+            int randomMachineIndex = _randomWithSeed.nextInt(numberOfClassesOfMachines);
             Class<?> c = classesOfMachines.get(randomMachineIndex);
             try {
                 Machine m = (Machine) c.newInstance();
                 machines.add(m);
+                System.out.println(m.getDescription() + " " + m.getId());
             } catch (Exception e) {
                 System.out.println(c.getName() + " could not be initialized.");
             }
