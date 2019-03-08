@@ -93,10 +93,11 @@ public class Factory {
                while (machineThread == thisThread) {
                    for (Machine m : machines) {
                        for (Property p : m.getProperties()) {
+                           JSONObject jo = p.getJsonObject(m);
                            ProducerRecord<String, JSONObject> rec
-                                   = new ProducerRecord<>("maintenance", p.getJsonObject(m));
+                                   = new ProducerRecord<>("maintenance", jo);
                            _kafkaProducer.send(rec);
-                           System.out.println("### SENT ###");
+                           System.out.println(jo);
                        }
                    }
 
