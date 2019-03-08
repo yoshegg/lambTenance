@@ -8,5 +8,7 @@ public class Model {
         _factory.start();
     }
 
+    public void stopFactory() { _factory.stop(); }
+
     public Factory getFactory() { return _factory; }
 }

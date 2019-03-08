@@ -17,13 +17,25 @@ public class FXMLController implements Initializable {
     private Button startFactoryButton;
 
     @FXML
+    private Button stopFactoryButton;
+
+    @FXML
     private Label label;
-    
+
     @FXML
     private void startFactory(ActionEvent event) {
         _model.startFactory();
-        label.setLabelFor(new Text("Factory started"));
+        label.setLabelFor(new Text("Factory started."));
         startFactoryButton.setDisable(true);
+        stopFactoryButton.setDisable(false);
+    }
+
+    @FXML
+    private void stopFactory(ActionEvent event) {
+        _model.stopFactory();
+        label.setLabelFor(new Text("Factory stopped."));
+        startFactoryButton.setDisable(false);
+        stopFactoryButton.setDisable(true);
     }
 
     @FXML

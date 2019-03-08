@@ -26,9 +26,19 @@ public class Factory {
         add(ConveyorBelt.class);
     }};
 
-    public void start() {
+    private Thread machineThread;
+
+
+    public Factory() {
         generateMachines();
+    }
+
+    public void start() {
         startMachines();
+    }
+
+    public void stop() {
+        stopMachines();
     }
 
     private void generateMachines() {
@@ -48,10 +58,12 @@ public class Factory {
 
     private void startMachines() {
         Thread thread = new Thread(() -> {
+        machineThread = new Thread(() -> {
+            Thread thisThread = Thread.currentThread();
             try {
                 FileWriter fileWriter = new FileWriter("test.txt");
                 BufferedWriter out = new BufferedWriter(fileWriter);
-                while (true) {
+                while (machineThread == thisThread) {
                     for (Machine m : machines)
                         out.write(m.toString());
                     out.flush();
@@ -61,7 +73,8 @@ public class Factory {
                 System.out.println(e);
             }
         });
-        thread.start();
+        machineThread.start();
+    }
     }
 
     public void generatePropertyError() {
