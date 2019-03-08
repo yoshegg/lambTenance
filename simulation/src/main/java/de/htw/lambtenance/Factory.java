@@ -6,11 +6,9 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.errors.AuthorizationException;
 import org.apache.kafka.common.errors.OutOfOrderSequenceException;
 import org.apache.kafka.common.errors.ProducerFencedException;
-import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -94,15 +92,16 @@ public class Factory {
                while (machineThread == thisThread) {
                    for (Machine m : machines) {
                        ProducerRecord<String, String> rec = new ProducerRecord<>("bla", m.toString());
-                       _kafaProducer.send(rec);
+                       _kafkaProducer.send(rec);
+                       System.out.println("Send with KafkaProducer: " + m.toString());
                    }
 
                }
            } catch (ProducerFencedException | OutOfOrderSequenceException | AuthorizationException e) {
                e.printStackTrace();
-               _kafaProducer.close();
+               _kafkaProducer.close();
            }
-           _kafaProducer.close();
+           _kafkaProducer.close();
         });
     }
 
@@ -176,7 +175,7 @@ public class Factory {
 
     private Properties _kafkaConfigProperties = new Properties();
 
-    private Producer _kafaProducer;
+    private Producer _kafkaProducer;
 
     private void setUpKafka() {
         _kafkaConfigProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -184,7 +183,7 @@ public class Factory {
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.ByteArraySerializer");
         _kafkaConfigProperties.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.StringSerializer");
-        _kafaProducer = new KafkaProducer<String, String>(_kafkaConfigProperties);
+        _kafkaProducer = new KafkaProducer<String, String>(_kafkaConfigProperties);
     }
 
 
