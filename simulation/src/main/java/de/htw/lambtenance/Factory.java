@@ -186,7 +186,7 @@ public class Factory {
         _kafkaConfigProperties.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.ByteArraySerializer");
         _kafkaConfigProperties.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.StringSerializer");
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.springframework.kafka.support.serializer.JsonSerializer");
         _kafkaProducer = new KafkaProducer<String, String>(_kafkaConfigProperties);
     }
 
