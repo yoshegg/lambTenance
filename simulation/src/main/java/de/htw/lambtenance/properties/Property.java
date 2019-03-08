@@ -1,5 +1,8 @@
 package de.htw.lambtenance.properties;
 
+import de.htw.lambtenance.machines.Machine;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.Random;
 
@@ -54,5 +57,19 @@ public abstract class Property {
                 DF.format(generateRealisticValue()) + " " +
                 _unit;
     }
+
+    public JSONObject getJsonObject(Machine machine) {
+        JSONObject obj = new JSONObject();
+
+        obj.put("machine_name", machine.getDescription());
+        obj.put("machine_id", machine.getId());
+
+        obj.put("sensor", _description);
+        obj.put("value", DF.format(generateRealisticValue()));
+        obj.put("unit", _unit);
+
+        return obj;
+    }
+
 
 }

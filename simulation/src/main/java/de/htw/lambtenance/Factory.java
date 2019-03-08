@@ -9,6 +9,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.AuthorizationException;
 import org.apache.kafka.common.errors.OutOfOrderSequenceException;
 import org.apache.kafka.common.errors.ProducerFencedException;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -91,9 +92,11 @@ public class Factory {
            try {
                while (machineThread == thisThread) {
                    for (Machine m : machines) {
-                       ProducerRecord<String, String> rec = new ProducerRecord<>("bla", m.toString());
-                       _kafkaProducer.send(rec);
-                       System.out.println("Send with KafkaProducer: " + m.toString());
+                       for (Property p : m.getProperties()) {
+                           ProducerRecord<String, JSONObject> rec
+                                   = new ProducerRecord<>("maintenance", p.getJsonObject(m));
+                           _kafkaProducer.send(rec);
+                       }
                    }
 
                }
