@@ -96,8 +96,8 @@ public class Factory {
                while (machineThread == thisThread) {
                    for (Machine m : machines) {
                        for (Property p : m.getProperties()) {
-                           JSONObject jo = p.getJsonObject(m);
-                           ProducerRecord<String, JSONObject> rec
+                           String jo = p.getJsonObject(m).toString();
+                           ProducerRecord<String, String> rec
                                    = new ProducerRecord<>("maintenance", jo);
                            _kafkaProducer.send(rec);
                            System.out.println(jo);
@@ -191,7 +191,7 @@ public class Factory {
         _kafkaConfigProperties.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.ByteArraySerializer");
         _kafkaConfigProperties.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.springframework.kafka.support.serializer.JsonSerializer");
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,"org.apache.kafka.common.serialization.StringSerializer");
         _kafkaProducer = new KafkaProducer<String, String>(_kafkaConfigProperties);
     }
 
