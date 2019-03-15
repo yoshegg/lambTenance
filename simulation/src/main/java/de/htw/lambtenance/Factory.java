@@ -105,8 +105,9 @@ public class Factory {
                            _kafkaProducer.send(recMaintenance);
 
                            // Stream to machine type topic
+                           String topic = m.getDescription().replace(" ", "");
                            ProducerRecord<String, String> recMachineType
-                                   = new ProducerRecord<>(m.getDescription(), jo);
+                                   = new ProducerRecord<>(topic, jo);
                            _kafkaProducer.send(recMachineType);
 
                             // print on command line of simulation
