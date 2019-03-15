@@ -106,7 +106,7 @@ public class Factory {
 
                            // Stream to machine type topic
                            ProducerRecord<String, String> recMachineType
-                                   = new ProducerRecord<>(p.getDescription(), jo);
+                                   = new ProducerRecord<>(m.getDescription(), jo);
                            _kafkaProducer.send(recMachineType);
 
                             // print on command line of simulation
