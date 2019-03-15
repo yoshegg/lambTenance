@@ -96,10 +96,20 @@ public class Factory {
                while (machineThread == thisThread) {
                    for (Machine m : machines) {
                        for (Property p : m.getProperties()) {
+
                            String jo = p.getJsonObject(m).toString();
-                           ProducerRecord<String, String> rec
+
+                           // Stream to maintenance topic
+                           ProducerRecord<String, String> recMaintenance
                                    = new ProducerRecord<>("maintenance", jo);
-                           _kafkaProducer.send(rec);
+                           _kafkaProducer.send(recMaintenance);
+
+                           // Stream to machine type topic
+                           ProducerRecord<String, String> recMachineType
+                                   = new ProducerRecord<>(p.getDescription(), jo);
+                           _kafkaProducer.send(recMachineType);
+
+                            // print on command line of simulation
                            System.out.println(jo);
                        }
                    }
