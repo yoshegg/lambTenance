@@ -111,7 +111,7 @@ public class Factory {
                            _kafkaProducer.send(recMachineType);
 
                             // print on command line of simulation
-                           System.out.println(jo);
+//                           System.out.println(jo);
                        }
                    }
 
