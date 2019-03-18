@@ -40,7 +40,7 @@ mvn clean compile exec:java
 ```
 cd lambTenance/sparkSpeedProject
 mvn compile assembly:single
-cd $spark-2.4.0-bin-hadoop2.7
+cd spark-2.4.0-bin-hadoop2.7
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/ && ./bin/spark-submit --class "SimpleApp" --master local[4] ../lambTenance/sparkSpeedProject/target/spark-project-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
