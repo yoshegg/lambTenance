@@ -16,7 +16,7 @@ TOP_LEVEL_FOLDER
 ```
 
 
-## HOWTO run
+## How to run the lambTenance demo:
 
 1. Start Zookeeper:
 ```
